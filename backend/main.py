@@ -2,6 +2,8 @@ import os
 import json
 import logging
 from fastapi import FastAPI, HTTPException, Path, Query
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
@@ -266,6 +268,28 @@ def delete_history_item(item_id: int = Path(..., ge=1)):
 def clear_history():
     database.clear_all_generations()
     return {"success": True, "message": "All history cleared successfully."}
+
+# Mount frontend static assets if available for single-server fullstack hosting
+frontend_dist = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "dist")
+
+if os.path.exists(frontend_dist):
+    assets_dir = os.path.join(frontend_dist, "assets")
+    if os.path.exists(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    @app.get("/{full_path:path}", tags=["Frontend"])
+    async def serve_frontend(full_path: str):
+        # Allow API routes to be handled by FastAPI endpoints
+        if full_path.startswith("api"):
+            raise HTTPException(status_code=404, detail="API endpoint not found")
+
+        target_path = os.path.join(frontend_dist, full_path)
+
+        if full_path and os.path.exists(target_path) and os.path.isfile(target_path):
+            return FileResponse(target_path)
+
+        # Return SPA index.html for all React router paths
+        return FileResponse(os.path.join(frontend_dist, "index.html"))
 
 if __name__ == "__main__":
     import uvicorn
