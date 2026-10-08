@@ -78,7 +78,7 @@ async def generate_text(prompt: str) -> Tuple[bool, str]:
     # 5. REST API fallback
     models_to_try = [
         model_name,
-        "gemini-3.8-flash"
+        "gemini-2.5-flash"
     ]
 
     # Remove duplicate model names
