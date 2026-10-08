@@ -16,7 +16,7 @@ def get_api_key() -> str:
 
 
 def get_model_name() -> str:
-    return os.getenv("GEMINI_MODEL", "gemini-3.8-flash").strip()
+    return os.getenv("GEMINI_MODEL", "gemini-3.7-flash").strip()
 
 
 def check_gemini_status() -> dict:
@@ -76,10 +76,7 @@ async def generate_text(prompt: str) -> Tuple[bool, str]:
         )
 
     # 5. REST API fallback
-    models_to_try = [
-        model_name,
-        "gemini-2.5-flash"
-    ]
+    models_to_try = [model_name,"gemini-3.7-flash","gemini-3.6-flash","gemini-3.5-flash"]
 
     # Remove duplicate model names
     models_to_try = list(dict.fromkeys(models_to_try))
