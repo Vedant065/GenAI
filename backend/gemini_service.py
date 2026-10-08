@@ -83,13 +83,13 @@ async def generate_text(prompt: str) -> Tuple[bool, str]:
 
     last_error = ""
 
-    async with httpx.AsyncClient(timeout=60.0) as http_client:
+    async with httpx.AsyncClient(timeout=20.0) as http_client:
 
         # 6. Try each model
         for m_name in models_to_try:
 
             # 7. Retry temporary errors
-            for attempt in range(3):
+            for attempt in range(2):
 
                 url = (
                     "https://generativelanguage.googleapis.com/"
@@ -110,7 +110,7 @@ async def generate_text(prompt: str) -> Tuple[bool, str]:
                     "generationConfig": {
                         "temperature": 0.7,
                         "topP": 0.95,
-                        "maxOutputTokens": 4096
+                        "maxOutputTokens": 2048
                     }
                 }
 
@@ -170,7 +170,7 @@ async def generate_text(prompt: str) -> Tuple[bool, str]:
                             f"for model {m_name}."
                         )
 
-                        if attempt < 2:
+                        if attempt < 1:
 
                             wait_time = (
                                 (2 ** attempt)
