@@ -54,7 +54,7 @@ async def generate_text(prompt: str) -> Tuple[bool, str]:
 
     # 2. Direct REST HTTP API call fallback (100% reliable across environments)
     # Support model fallback list if initial model errors out
-    models_to_try = [model_name, "gemini-2.5-flash", "gemini-1.5-flash", "gemini-2.0-flash"]
+    models_to_try = [model_name,"gemini-3.8-flash"]
     # De-duplicate while preserving order
     seen = set()
     models_to_try = [m for m in models_to_try if not (m in seen or seen.add(m))]
