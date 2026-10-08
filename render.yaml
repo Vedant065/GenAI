@@ -1,8 +1,7 @@
 services:
-  # Backend FastAPI Service
   - type: web
     name: genai-content-studio-api
-    env: python
+    runtime: python
     region: oregon
     buildCommand: cd backend && pip install -r requirements.txt
     startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
@@ -12,12 +11,10 @@ services:
       - key: GEMINI_MODEL
         value: gemini-2.5-flash
 
-  # Frontend Static Site
   - type: static
     name: genai-content-studio-frontend
-    env: static
     buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: ./frontend/dist
+    staticPublishPath: frontend/dist
     routes:
       - type: rewrite
         source: /*
