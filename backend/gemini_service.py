@@ -110,7 +110,7 @@ async def generate_text(prompt: str) -> Tuple[bool, str]:
                     "generationConfig": {
                         "temperature": 0.7,
                         "topP": 0.95,
-                        "maxOutputTokens": 2048
+                        "maxOutputTokens": 4098
                     }
                 }
 
